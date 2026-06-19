@@ -1,0 +1,249 @@
+.kanban-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px 0 20px 0;
+  min-height: 60vh;
+}
+
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 0 5px;
+  min-width: max-content;
+}
+
+.kanban-column {
+  width: 320px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.kanban-column.drag-over {
+  background: rgba(74, 144, 226, 0.1);
+  border: 2px dashed #4a90e2;
+  transform: scale(1.02);
+}
+
+.column-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px 12px 0 0;
+}
+
+.column-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.candidate-count {
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.column-content {
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+/* Scrollbar for columns */
+.column-content::-webkit-scrollbar {
+  width: 6px;
+}
+.column-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.column-content::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.empty-column-msg {
+  padding: 20px;
+  text-align: center;
+  color: #adb5bd;
+  font-style: italic;
+  font-size: 0.9rem;
+  border: 1px dashed rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+.kanban-card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: grab;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kanban-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-card:active, .kanban-card.dragging {
+  cursor: grabbing;
+  opacity: 0.6;
+  transform: scale(0.95);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.card-score {
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 32px;
+  text-align: center;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-detail {
+  font-size: 0.85rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.micro-skill {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.micro-skill.empty {
+  background: #e9ecef;
+  font-weight: 500;
+}
+
+/* Add column segment */
+.kanban-column.add-column {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  justify-content: flex-start;
+  min-width: 280px;
+}
+
+.add-column-btn {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6c757d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.add-column-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: #4a90e2;
+}
+
+.add-column-form {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-column-form input {
+  padding: 10px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.add-column-form input:focus {
+  border-color: #4a90e2;
+}
+
+.add-column-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.add-column-actions button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.save-col-btn {
+  background: #4a90e2;
+  color: white;
+  flex: 1;
+}
+
+.cancel-col-btn {
+  background: #e9ecef;
+  color: #495057;
+}

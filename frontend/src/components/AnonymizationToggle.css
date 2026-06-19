@@ -1,0 +1,129 @@
+@import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
+
+.anonymization-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  border: 1px solid #cce7ff;
+  border-radius: 12px;
+  min-width: 200px;
+  gap: 1rem;
+}
+
+.toggle-label-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-icon {
+  color: #0077ff;
+  font-size: 1.1rem;
+}
+
+.toggle-label {
+  color: #0056b3;
+  font-weight: 600;
+  font-family: 'Poppins', 'Nova Round', sans-serif;
+  font-size: 0.9rem;
+}
+
+.toggle-switch-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #e2e8f0;
+  border-radius: 24px;
+  transition: background-color 0.3s ease;
+  border: 2px solid #cbd5e0;
+}
+
+.toggle-thumb {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #0077ff 0%, #0056b3 100%);
+  border-color: #0077ff;
+}
+
+.toggle-input:checked + .toggle-slider .toggle-thumb {
+  transform: translateX(26px);
+  box-shadow: 0 2px 8px rgba(0, 119, 255, 0.3);
+}
+
+.toggle-status {
+  color: #4a5568;
+  font-weight: 600;
+  font-family: 'Poppins', 'Nova Round', sans-serif;
+  font-size: 0.8rem;
+  min-width: 25px;
+}
+
+.toggle-input:checked ~ .toggle-status {
+  color: #0077ff;
+}
+
+/* Hover effects */
+.toggle-switch:hover .toggle-slider {
+  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .anonymization-toggle-container {
+    min-width: 180px;
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .toggle-label {
+    font-size: 0.8rem;
+  }
+  
+  .toggle-switch {
+    width: 45px;
+    height: 22px;
+  }
+  
+  .toggle-thumb {
+    height: 14px;
+    width: 14px;
+  }
+  
+  .toggle-input:checked + .toggle-slider .toggle-thumb {
+    transform: translateX(23px);
+  }
+}
