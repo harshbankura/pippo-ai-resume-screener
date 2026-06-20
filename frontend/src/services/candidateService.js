@@ -3,10 +3,19 @@ import { processCandidates } from '../utils/candidateUtils';
 
 const API_BASE_URL = 'https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1';
 
+const NGROK_HEADERS = {
+  "ngrok-skip-browser-warning": "true"
+};
+
 class CandidateService {
   async fetchAllCandidates(limit = 100) {
     try {
-      const response = await fetch(`${API_BASE_URL}/candidates/?limit=${limit}`);
+      const response = await fetch(
+        `${API_BASE_URL}/candidates/?limit=${limit}`,
+        {
+          headers: NGROK_HEADERS
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -22,38 +31,47 @@ class CandidateService {
 
   async fetchCandidateById(id) {
     try {
-      const response = await fetch(`${API_BASE_URL}/candidates/${id}`);
+      const response = await fetch(
+        `${API_BASE_URL}/candidates/${id}`,
+        {
+          headers: NGROK_HEADERS
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       console.error('Error fetching candidate details:', error);
       throw error;
     }
   }
 
-  // FIXED: Use the correct upload endpoint that now exists in backend
   async uploadResume(file, jobDescription = '') {
     try {
       const formData = new FormData();
       formData.append('file', file);
+
       if (jobDescription) {
         formData.append('job_description', jobDescription);
       }
 
-      // FIXED: Use the upload-resume endpoint that your backend now supports
-      const response = await fetch(`${API_BASE_URL}/upload-resume/`, {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/upload-resume/`,
+        {
+          method: 'POST',
+          headers: NGROK_HEADERS,
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || `Upload failed: ${response.status}`);
+        throw new Error(
+          errorData.detail || `Upload failed: ${response.status}`
+        );
       }
 
       return await response.json();
@@ -63,21 +81,24 @@ class CandidateService {
     }
   }
 
-  // Additional enhanced methods
   async searchCandidates(query, filters = {}) {
     try {
-      const response = await fetch(`${API_BASE_URL}/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-          filters,
-          sort_by: 'match_score',
-          order: 'desc'
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/search`,
+        {
+          method: 'POST',
+          headers: {
+            ...NGROK_HEADERS,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query,
+            filters,
+            sort_by: 'match_score',
+            order: 'desc',
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Search failed: ${response.status}`);
@@ -93,7 +114,12 @@ class CandidateService {
 
   async getStats() {
     try {
-      const response = await fetch(`${API_BASE_URL}/stats`);
+      const response = await fetch(
+        `${API_BASE_URL}/stats`,
+        {
+          headers: NGROK_HEADERS
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Stats failed: ${response.status}`);
@@ -108,9 +134,13 @@ class CandidateService {
 
   async resetDatabase() {
     try {
-      const response = await fetch(`${API_BASE_URL}/reset`, {
-        method: 'POST',
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/reset`,
+        {
+          method: 'POST',
+          headers: NGROK_HEADERS
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Reset failed: ${response.status}`);
@@ -125,13 +155,17 @@ class CandidateService {
 
   async updateCandidate(candidateId, updateData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/candidates/${candidateId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateData),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/candidates/${candidateId}`,
+        {
+          method: 'PUT',
+          headers: {
+            ...NGROK_HEADERS,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Update failed: ${response.status}`);
@@ -146,9 +180,13 @@ class CandidateService {
 
   async deleteCandidate(candidateId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/candidates/${candidateId}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/candidates/${candidateId}`,
+        {
+          method: 'DELETE',
+          headers: NGROK_HEADERS
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Delete failed: ${response.status}`);
@@ -163,15 +201,19 @@ class CandidateService {
 
   async bulkDeleteCandidates(candidateIds) {
     try {
-      const response = await fetch(`${API_BASE_URL}/candidates/bulk-delete`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          candidate_ids: candidateIds
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/candidates/bulk-delete`,
+        {
+          method: 'POST',
+          headers: {
+            ...NGROK_HEADERS,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            candidate_ids: candidateIds,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Bulk delete failed: ${response.status}`);
@@ -187,7 +229,10 @@ class CandidateService {
   async exportCandidates(format = 'json', includeResumeText = false) {
     try {
       const response = await fetch(
-        `${API_BASE_URL}/export?format=${format}&include_resume_text=${includeResumeText}`
+        `${API_BASE_URL}/export?format=${format}&include_resume_text=${includeResumeText}`,
+        {
+          headers: NGROK_HEADERS
+        }
       );
 
       if (!response.ok) {
@@ -204,14 +249,19 @@ class CandidateService {
   async reparseCandidate(candidateId, jobDescription = '') {
     try {
       const formData = new FormData();
+
       if (jobDescription) {
         formData.append('job_description', jobDescription);
       }
 
-      const response = await fetch(`${API_BASE_URL}/reparse/${candidateId}`, {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/reparse/${candidateId}`,
+        {
+          method: 'POST',
+          headers: NGROK_HEADERS,
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Reparse failed: ${response.status}`);
