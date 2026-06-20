@@ -17,15 +17,15 @@ function App() {
 
   const handleReset = async () => {
     if (!window.confirm('This will permanently delete ALL candidates from the database. Are you absolutely sure?')) return;
-    
+
     try {
       // FIXED: Use correct API endpoint with proper error handling
-      const response = await axios.post('http://localhost:8000/api/v1/reset');
-      
+      const response = await axios.post('https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/reset');
+
       if (response.data.status === 'success') {
         dispatch({ type: 'RESET_CANDIDATES' });
         alert(`✅ Reset Complete!\n${response.data.message}`);
-        
+
         // Refresh dashboard if currently viewing it
         if (view === 'dashboard') {
           window.location.reload();
@@ -33,7 +33,7 @@ function App() {
       } else {
         throw new Error(response.data.message || 'Reset failed');
       }
-      
+
     } catch (error) {
       console.error('Reset failed:', error);
       const errorMessage = error.response?.data?.detail || error.message || 'Unknown error occurred';
@@ -42,11 +42,11 @@ function App() {
   };
 
   return (
-    <div> 
+    <div>
       <nav className="custom-navbar">
-        <img 
-          src="/img/Pippo.png" 
-          alt="PIPPO Logo" 
+        <img
+          src="/img/Pippo.png"
+          alt="PIPPO Logo"
           className="logo-standalone"
           onError={(e) => { e.target.style.display = 'none'; }}
         />
@@ -65,8 +65,8 @@ function App() {
           >
             Dashboard
           </button>
-          <button 
-            className="reset-btn" 
+          <button
+            className="reset-btn"
             onClick={handleReset}
             title="Reset All Candidate Data"
             aria-label="Reset System"

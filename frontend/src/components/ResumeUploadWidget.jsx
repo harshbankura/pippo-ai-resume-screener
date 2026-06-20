@@ -10,12 +10,12 @@ const ResumeUploadWidget = (props) => {
 
   const validateFile = (file) => {
     const allowedTypes = [
-      'application/pdf', 
+      'application/pdf',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'text/plain'
     ];
     const maxSize = 10 * 1024 * 1024; // 10MB
-    
+
     if (!allowedTypes.includes(file.type)) {
       return 'Only PDF, DOCX, and TXT files are allowed.';
     }
@@ -82,12 +82,12 @@ const ResumeUploadWidget = (props) => {
     }
 
     setUploading(true);
-    
+
     try {
       // Get job description and role from the payload, persistent chatbot state, or old props
       const jobDescription = props.payload?.jobDescription || props.state?.currentJobDescription || props.jobDescription || '';
       const jobRole = props.payload?.jobRole || props.state?.currentJobRole || props.jobRole || 'Unassigned';
-      
+
       // Process each file
       for (const file of files) {
         const formData = new FormData();
@@ -97,7 +97,7 @@ const ResumeUploadWidget = (props) => {
         }
         formData.append('job_role', jobRole.trim());
 
-        const response = await fetch('http://localhost:8000/api/v1/upload-resume/', {
+        const response = await fetch('https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/upload-resume/', {
           method: 'POST',
           body: formData,
         });
@@ -110,7 +110,7 @@ const ResumeUploadWidget = (props) => {
 
       // Call the action provider to proceed
       props.actionProvider.handleResumeUpload(files);
-      
+
     } catch (error) {
       console.error('Upload error:', error);
       setError(`Upload failed: ${error.message}`);
@@ -140,11 +140,11 @@ const ResumeUploadWidget = (props) => {
           onChange={onFileSelect}
         />
       </div>
-      
+
       {error && (
         <p className="error-message">{error}</p>
       )}
-      
+
       {files.length > 0 && (
         <div className="file-list">
           <h4 style={{ margin: '10px 0 5px 0', fontSize: '14px', color: '#333' }}>
@@ -155,7 +155,7 @@ const ResumeUploadWidget = (props) => {
               <div key={index} className="file-item">
                 <span className="file-name">{file.name}</span>
                 <span className="file-size">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
-                <button 
+                <button
                   className="file-remove-btn"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -168,8 +168,8 @@ const ResumeUploadWidget = (props) => {
               </div>
             ))}
           </div>
-          <button 
-            className="widget-button" 
+          <button
+            className="widget-button"
             onClick={handleSubmit}
             disabled={uploading}
           >

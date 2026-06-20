@@ -17,21 +17,21 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
     try {
       setLoading(true);
       setError('');
-      
-      const response = await fetch(`http://localhost:8000/api/v1/candidates/${candidateId}`);
-      
+
+      const response = await fetch(`https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/candidates/${candidateId}`);
+
       if (!response.ok) {
         throw new Error(`Failed to load candidate details: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       // FIXED: Calculate overall score after fetching data
       const candidateWithScore = {
         ...data,
         overall_score: calculateOverallScore(data)
       };
-      
+
       setCandidate(candidateWithScore);
     } catch (err) {
       console.error('Error fetching candidate details:', err);
@@ -46,17 +46,17 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
     // Store original styles
     const originalBodyOverflow = document.body.style.overflow;
     const originalHtmlOverflow = document.documentElement.style.overflow;
-    
+
     // Simple scroll lock
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
-    
+
     // FIXED: Cleanup function that always runs
     return () => {
       // Force restore original styles
       document.body.style.overflow = originalBodyOverflow || '';
       document.documentElement.style.overflow = originalHtmlOverflow || '';
-      
+
       // Force enable scrolling if still locked
       if (document.body.style.overflow === 'hidden') {
         document.body.style.overflow = 'auto';
@@ -75,7 +75,7 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
-    
+
     // Call parent close function
     onClose();
   };
@@ -102,7 +102,7 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
     const seed = candidateId * 12345;
     let result = '';
     let tempSeed = seed;
-    
+
     for (let i = 0; i < 6; i++) {
       result += chars[tempSeed % chars.length];
       tempSeed = Math.floor(tempSeed / chars.length) + 7;
@@ -295,7 +295,7 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
             <h3>Resume Preview</h3>
             <div className="resume-preview-container">
               <div className="resume-preview">
-                {candidate.resume_text ? 
+                {candidate.resume_text ?
                   candidate.resume_text.substring(0, 300) + (candidate.resume_text.length > 300 ? '...' : '')
                   : 'No resume text available'
                 }
@@ -305,28 +305,28 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
         </div>
 
         <div className="modal-footer compact">
-          <button 
-            onClick={handleScheduleInterview} 
+          <button
+            onClick={handleScheduleInterview}
             className="primary-btn action-btn"
           >
             Schedule Interview
           </button>
-          <button 
-            onClick={handleSendEmail} 
+          <button
+            onClick={handleSendEmail}
             className="primary-btn action-btn secondary"
           >
             Send Email
           </button>
-          <button 
-            onClick={handleDownloadResume} 
+          <button
+            onClick={handleDownloadResume}
             className="primary-btn action-btn tertiary"
           >
             Download Resume
           </button>
           {onDelete && (
-            <button 
-              onClick={onDelete} 
-              className="primary-btn action-btn" 
+            <button
+              onClick={onDelete}
+              className="primary-btn action-btn"
               style={{ backgroundColor: '#e74c3c' }}
             >
               Delete Candidate

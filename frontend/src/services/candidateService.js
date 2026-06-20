@@ -1,17 +1,17 @@
 // services/candidateService.js
 import { processCandidates } from '../utils/candidateUtils';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = 'https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1';
 
 class CandidateService {
   async fetchAllCandidates(limit = 100) {
     try {
       const response = await fetch(`${API_BASE_URL}/candidates/?limit=${limit}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return processCandidates(data);
     } catch (error) {
@@ -23,11 +23,11 @@ class CandidateService {
   async fetchCandidateById(id) {
     try {
       const response = await fetch(`${API_BASE_URL}/candidates/${id}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
@@ -94,7 +94,7 @@ class CandidateService {
   async getStats() {
     try {
       const response = await fetch(`${API_BASE_URL}/stats`);
-      
+
       if (!response.ok) {
         throw new Error(`Stats failed: ${response.status}`);
       }
