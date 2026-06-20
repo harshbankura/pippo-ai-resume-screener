@@ -18,7 +18,14 @@ const CandidateDetail = ({ candidateId, onClose, onDelete, isAnonymized = false 
       setLoading(true);
       setError('');
 
-      const response = await fetch(`https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/candidates/${candidateId}`);
+      const response = await fetch(
+        `https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/candidates/${candidateId}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true"
+          }
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Failed to load candidate details: ${response.status}`);

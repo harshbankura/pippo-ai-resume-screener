@@ -99,6 +99,9 @@ const ResumeUploadWidget = (props) => {
 
         const response = await fetch('https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/upload-resume/', {
           method: 'POST',
+          headers: {
+            "ngrok-skip-browser-warning": "true"
+          },
           body: formData,
         });
 

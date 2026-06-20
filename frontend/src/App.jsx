@@ -20,8 +20,15 @@ function App() {
 
     try {
       // FIXED: Use correct API endpoint with proper error handling
-      const response = await axios.post('https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/reset');
-
+      const response = await axios.post(
+        'https://obtuse-browse-jigsaw.ngrok-free.dev/api/v1/reset',
+        {},
+        {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
+        }
+      );
       if (response.data.status === 'success') {
         dispatch({ type: 'RESET_CANDIDATES' });
         alert(`✅ Reset Complete!\n${response.data.message}`);
