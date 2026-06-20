@@ -54,11 +54,16 @@ app = FastAPI(
 # Enhanced CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://pippo-ai-resume-screener.vercel.app"
+    ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.get("/cors-test")
+def cors_test():
+    return {"status": "cors working"}
 
 # Include routers with prefix for better API organization
 app.include_router(candidate_router, prefix="/api/v1", tags=["candidates"])
